@@ -1,0 +1,15 @@
+[mysqld]
+# Disable root remote connections
+bind-address = 0.0.0.0
+skip-networking = 0
+
+# General security settings
+local_infile = 0
+symbolic-links = 0
+
+# Authentication settings
+secure_auth = ON
+default_password_lifetime = 90
+
+# SSL/TLS security options  
+require_secure_transport = OFF
