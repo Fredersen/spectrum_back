@@ -5,18 +5,15 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use App\Repository\MediaRepository;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Types\UuidType;
-use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: MediaRepository::class)]
 #[ApiResource]
 class Media
 {
     #[ORM\Id]
-    #[ORM\Column(type: UuidType::NAME, unique: true)]
-    #[ORM\GeneratedValue(strategy: 'CUSTOM')]
-    #[ORM\CustomIdGenerator(class: 'doctrine.uuid_generator')]
-    private Uuid $id;
+    #[ORM\Column]
+    #[ORM\GeneratedValue]
+    private int $id;
 
     #[ORM\Column(length: 255)]
     private string $title;
@@ -39,12 +36,12 @@ class Media
         $this->updateAt = new DateTimeImmutable();
     }
 
-    public function getId(): Uuid
+    public function getId(): int
     {
         return $this->id;
     }
 
-    public function setId(Uuid $id): static
+    public function setId(int $id): static
     {
         $this->id = $id;
 
