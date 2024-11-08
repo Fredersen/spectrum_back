@@ -30,6 +30,7 @@ services:
       - "8000:8000"
     volumes:
       - .:/var/www/project  
+      - ./entrypoint.sh/:/var/www/project/entrypoint.sh
     environment:
       - APP_ENV=dev
       - XDEBUG_MODE=debug  

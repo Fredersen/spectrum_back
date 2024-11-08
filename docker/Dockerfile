@@ -23,4 +23,4 @@ WORKDIR /var/www/project
 
 EXPOSE 8000
 
-ENTRYPOINT [ "entypoint.sh" ] 
+ENTRYPOINT [ "/var/www/project/entrypoint.sh" ] 

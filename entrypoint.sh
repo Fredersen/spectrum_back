@@ -2,16 +2,9 @@
 set -e
 
 # Vérifie si les dépendances PHP sont installées
-if [ ! -d "vendor" ]; then
-    echo "Installation des dépendances PHP..."
-    composer install
-fi
+echo "Installation des dépendances PHP..."
+composer install
 
-# Vérifie si les dépendances Node.js sont installées (si nécessaire)
-if [ ! -d "node_modules" ]; then
-    echo "Installation des dépendances Node.js..."
-    npm install
-fi
 
 # Applique les migrations de la base de données en mode développement (optionnel)
 if [ "$APP_ENV" = "dev" ]; then
