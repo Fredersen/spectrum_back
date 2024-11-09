@@ -1,17 +1,17 @@
 #!/bin/bash
 set -e
 
-# Vérifie si les dépendances PHP sont installées
-echo "Installation des dépendances PHP..."
-composer install
+# Load the DATABASE_URL secret from the Docker secrets file
+export DATABASE_URL=$(cat /run/secrets/database_url)
 
+# Check if PHP dependencies are installed
+echo "Installing PHP dependencies..."
+composer install --no-interaction
 
-# Applique les migrations de la base de données en mode développement (optionnel)
-if [ "$APP_ENV" = "dev" ]; then
-    echo "Application des migrations..."
-    php bin/console doctrine:migrations:migrate --no-interaction
-fi
+# # Run database migrations 
+echo "Applying database migrations..."
+php bin/console doctrine:migrations:migrate --no-interaction
 
-# Démarre le serveur Symfony
-echo "Démarrage du serveur Symfony..."
-exec php -S 0.0.0.0:8000 -t public
+# Start the Symfony server
+echo "Starting the Symfony server..."
+php -S 0.0.0.0:8000 -t public

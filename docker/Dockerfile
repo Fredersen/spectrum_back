@@ -1,23 +1,20 @@
 FROM php:8.3-cli
 
-# ADD --chmod=0755 https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions /usr/local/bin/
+# Download the installer script and make it executable
+RUN curl -sSL https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions -o /usr/local/bin/install-php-extensions && \
+    chmod +x /usr/local/bin/install-php-extensions
 
-# RUN install-php-extensions gd xdebug
+# Install the required PHP extensions
+RUN install-php-extensions gd xdebug pdo_mysql
 
-RUN ( curl -sSLf https://github.com/mlocati/docker-php-extension-installer/releases/latest/download/install-php-extensions -o - || echo 'return 1' ) | sh -s \
-      gd xdebug
-
+# Install composer
 RUN curl -sSk https://getcomposer.org/installer | php -- --disable-tls && \
 	mv composer.phar /usr/local/bin/composer
 
-RUN apt update && apt install -yqq nodejs npm
 
 COPY . /var/www/project
 
 COPY ./apache.conf /etc/apache2/sites-available/000-default.conf
-
-RUN cd /var/www/project && \
-      composer install
 
 WORKDIR /var/www/project
 
