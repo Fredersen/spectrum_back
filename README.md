@@ -28,7 +28,6 @@ chmod 600 secrets/*
 ```
 cd spectrum_back
 docker-compose up
-docker-compose exec app php bin/console lexik:jwt:generate-keypair
 ```
 Wait the building of the containers and open http://localhost:8000/api in web browser.
 
