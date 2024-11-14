@@ -14,4 +14,4 @@ php bin/console doctrine:migrations:migrate --no-interaction
 
 # Start the Symfony server
 echo "Starting the Symfony server..."
-php -S 0.0.0.0:8000 -t public
+php bin/console server:start
