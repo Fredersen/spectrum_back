@@ -5,9 +5,9 @@
 1) Run the code bellow
 ```
 cd spectrum_back
-# Set root and app passwords
-root_password="votre_mot_de_passe_root_complexe"
-password="votre_mot_de_passe_app_complexe"
+# Set database root and spectrumuser passwords
+root_password="your_strong_root_database_password"
+password="your_strong_spectrumuser_password"
 
 # Create the secrets directory if it doesn't already exist
 mkdir -p secrets/
