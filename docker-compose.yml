@@ -1,0 +1,55 @@
+services:
+  database:
+    image: mysql:8.0 
+    environment:
+      - MYSQL_ROOT_PASSWORD_FILE=/run/secrets/mysql_root_password
+      - MYSQL_DATABASE=spectrum
+      - MYSQL_USER=spectrumuser
+      - MYSQL_PASSWORD_FILE=/run/secrets/mysql_password
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./mysql/conf.d:/etc/mysql/conf.d:ro
+    ports:
+      - "3307:3306" 
+    secrets:
+      - mysql_root_password
+      - mysql_password
+
+    security_opt:
+      - no-new-privileges:true
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "healthcheck_user", "--password=$${MYSQL_PASSWORD}"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+  app:
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/var/www/project  
+      - ./entrypoint.sh/:/var/www/project/entrypoint.sh
+    environment:
+      - APP_ENV=dev
+      - XDEBUG_MODE=debug  
+      - XDEBUG_CONFIG=client_host=host.docker.internal
+    secrets:
+      - database_url
+    depends_on:
+      - database
+
+
+volumes:
+  mysql-data:
+    driver: local
+
+secrets:
+  mysql_root_password:
+    file: ./secrets/mysql_root_password.txt
+  mysql_password:
+    file: ./secrets/mysql_password.txt
+  database_url:
+    file: ./secrets/database_url.txt
